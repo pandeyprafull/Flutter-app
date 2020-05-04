@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import './question.dart';
-import './answer.dart';
+
+import './quiz.dart';
+import './result.dart';
 // void main(){
-// runApp(MyApp());
+// runApp(MyApp());;
 // }
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-
-@override
+  @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
 
@@ -17,49 +17,50 @@ class MyApp extends StatefulWidget {
   }
 }
 
-class _MyAppState extends State<MyApp>{
-    var _questionIndex = 0;
+class _MyAppState extends State<MyApp> {
+  var _questionIndex = 0;
+  final _questions = const [
+    {
+      'questionText': 'What\'s your favourite color ?',
+      'answers': ['Black', 'Red', 'Green', 'White'],
+    },
+    {
+      'questionText': 'What\'s your favourite animal ?',
+      'answers': ['Rabbit', 'Snake', 'Elephant', 'Lion'],
+    },
+    {
+      'questionText': 'What\'s your favourite instructor ?',
+      'answers': ['max', 'max', 'max', 'max'],
+    }
+  ];
 
   void _answerQuestions() {
+    if (_questionIndex < _questions.length) {}
     setState(() {
-    _questionIndex = _questionIndex + 1;
+      _questionIndex = _questionIndex + 1;
+      print(_questionIndex);
     });
 
-    print(_questionIndex);
+    if (_questionIndex < _questions.length) {
+      print('we have more questions');
+    } else {
+      print('No more questions...');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      {
-        'questionText': 'What\'s your favourite color ?',
-        'answers': ['Black', 'Red', 'Green', 'White'],
-      },
-      {
-        'questionText': 'What\'s your favourite animal ?',
-        'answers': ['Rabbit', 'Snake', 'Elephant', 'Lion'],
-      },
-      {
-        'questionText': 'What\'s your favourite instructor ?',
-        'answers': ['max', 'max', 'max', 'max'],
-      }
-    ];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Mys First App'),
+          title: Text('My First App'),
         ),
-        body: Column(
-          children: [
-
-            Question(questions[_questionIndex]['questionText']),
-            // Text(questions[_questionIndex]),
-            ...(questions[_questionIndex]['answers'] as List<String>).map((answer){
-              return Answer(_answerQuestions, answer);
-            }).toList()
-
-          ],
-        ),
+        body: _questionIndex < _questions.length
+            ? Quiz(
+                answerQuestion: _answerQuestions,
+                questionIndex: _questionIndex,
+                questions: _questions)
+            : Result() ,
       ),
     );
   }
